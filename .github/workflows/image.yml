@@ -19,7 +19,7 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          registry: registry.hub.docker.com
+          registry: ${{ secrets.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push
@@ -29,4 +29,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-              thirteenthree/next-notion:${{ steps.date.outputs.today }}
+            ${{ secrets.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/next-notion:${{ steps.date.outputs.today }}
