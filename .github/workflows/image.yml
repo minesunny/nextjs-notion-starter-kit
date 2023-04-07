@@ -12,16 +12,20 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
       - name: Get current date
         id: date
         run: |
-          echo "::set-output name=today::$(date +'%Y-%m-%d')"
+          echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           registry: ${{ secrets.REGISTRY }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -29,4 +33,41 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ secrets.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/next-notion:${{ steps.date.outputs.today }}
+            ${{ secrets.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/next-notion:${{ steps.date.outputs.today }}
+
+      - name: Init Stop Next-Notion
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{secrets.KEY}}
+          script: |
+            mkdir -p ${{secrets.NEXT_NOTION_DIR}} && cd "$_" > /dev/null 2>&1
+            ls |grep -q docker-compose.yml && docker-compose down|| echo "docker-compose not exist"
+            docker images | grep -q next-notion && docker images | grep next-notion | awk '{print $3}' | xargs docker
+            rmi -f || echo "Image does not exist."
+
+      - name: copy docker-compose to ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "./docker-compose.yml"
+          target: "${{secrets.NEXT_NOTION_DIR}}"
+
+      - name: Start Next-Notion
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{secrets.KEY}}
+          script: |
+            sed -i "s/tag/${{ steps.date.outputs.today }}/g" ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml
+            sed -i "s/repository/${{ secrets.DOCKER_USERNAME }}/g" ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml
+            docker-compose -f ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml up -d
+
+
