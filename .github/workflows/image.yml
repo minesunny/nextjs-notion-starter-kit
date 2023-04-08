@@ -1,5 +1,8 @@
 name: Push into main branch
-on: [push,workflow_dispatch]
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
 jobs:
   context:
     runs-on: ubuntu-latest
@@ -34,31 +37,17 @@ jobs:
           push: true
           tags: |
             ${{ secrets.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/next-notion:${{ steps.date.outputs.today }}
-
-      - name: Init Stop Next-Notion
-        uses: appleboy/ssh-action@v0.1.9
-        with:
-          host: ${{ secrets.HOST }}
-          port: ${{ secrets.PORT }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{secrets.KEY}}
-          script: |
-            mkdir -p ${{secrets.NEXT_NOTION_DIR}} && cd "$_" > /dev/null 2>&1
-            ls |grep -q docker-compose.yml && docker-compose down|| echo "docker-compose not exist"
-            docker images | grep -q next-notion && docker images | grep next-notion | awk '{print $3}' | xargs docker
-            rmi -f || echo "Image does not exist."
-
-      - name: copy docker-compose to ssh
+      - name: copy script to ssh
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          source: "./docker-compose.yml"
+          source: "./docker-compose.yml,./next-notion-script.sh"
           target: "${{secrets.NEXT_NOTION_DIR}}"
 
-      - name: Start Next-Notion
+      - name: Next-Notion
         uses: appleboy/ssh-action@v0.1.9
         with:
           host: ${{ secrets.HOST }}
@@ -66,8 +55,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{secrets.KEY}}
           script: |
-            sed -i "s/tag/${{ steps.date.outputs.today }}/g" ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml
-            sed -i "s/repository/${{ secrets.DOCKER_USERNAME }}/g" ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml
-            docker-compose -f ${{secrets.NEXT_NOTION_DIR}}/docker-compose.yml up -d
+            chmod +x ${{secrets.NEXT_NOTION_DIR}}/next-notion-script.sh 
+            ${{secrets.NEXT_NOTION_DIR}}/next-notion-script.sh ${{secrets.NEXT_NOTION_DIR}} ${{secrets
+            .DOCKER_USERNAME}} ${{steps.date.outputs.today}}
+            rm ${{secrets.NEXT_NOTION_DIR}}/next-notion-script.sh && echo "clean ${{secrets.NEXT_NOTION_DIR}}/next-notion-script.sh"
+
 
 
