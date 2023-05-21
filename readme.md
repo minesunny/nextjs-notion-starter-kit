@@ -1,3 +1,23 @@
+# 部署到个人服务器教程
+### 为什么要部署到个人服务器
+cloudflare dns  加vercel部署方案,我尝试过了,说快也不快,说慢也不慢;但是cloudflare dns 好像影响到我域名在国内的解析了;
+
+notion在国内访问还是可以的,天天担心国外的东西有风险,不如多想想写几篇文档;
+
+注意文档里不要引用unplash 图片资源,这个非常慢;可以自己设置图床什么的,或者自己在云服务器上用clash代理
+
+image.yml workflow会将next-notion构建一个镜像,然后到云服务器拉镜像起服务
+所以需要给image.yml配置几个secrets变量(其他notion配置变量请看原仓库文档)
+
+- REGISTRY:docker登录地址 registry.hub.docker.com
+- DOCKER_USERNAME=docker登录账户
+- DOCKER_PASSWORD=docker密码
+- KEY=ssh 登录方式私钥;如果本地使用act测试workflow,注意将换行用\n表示
+- PORT=云服务器端口
+- HOST=云服务器地址
+- USERNAME=云服务器登录账号名
+- NEXT_NOTION_DIR=部署next-notion的路径,如/root/container/next-notion
+
 <p align="center">
   <a href="https://transitivebullsh.it/nextjs-notion-starter-kit">
     <img alt="Example article page" src="https://user-images.githubusercontent.com/552829/160132094-12875e09-41ec-450a-80fc-ae8cd488129d.jpg" width="689">

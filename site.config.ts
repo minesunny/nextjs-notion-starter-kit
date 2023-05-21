@@ -10,16 +10,16 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'Next.js Notion Starter Kit',
-  domain: 'blog.minesunshine.cn',
+  domain: 'www.minesunny.cn',
   author: 'Mine',
 
   // open graph metadata (optional)
   description: 'Example Next.js Notion Starter Kit Site',
 
   // social usernames (optional)
-  twitter: 'transitive_bs',
-  github: 'transitive-bullshit',
-  linkedin: 'fisch2',
+  twitter: 'minesunny',
+  github: 'minesunny',
+  linkedin: 'minesunny',
   // mastodon: '#', // optional mastodon profile URL, provides link verification
   // newsletter: '#', // optional newsletter URL
   // youtube: '#', // optional youtube channel name or `channel/UCGbXXXXXXXXXXXXXXXXXXXXXX`
@@ -50,16 +50,16 @@ export default siteConfig({
 
   // whether to use the default notion navigation style or a custom one with links to
   // important pages
-  navigationStyle: 'default'
-  // navigationStyle: 'custom',
-  // navigationLinks: [
-  //   {
-  //     title: 'Tips',
-  //     pageId: 'fec636dfeeef48e09da1732f3b33bbf5'
-  //   },
-  //   {
-  //     title: 'Tools',
-  //     pageId: 'c3fc1476be894717af9ad19633041032'
-  //   }
-  // ]
+  // navigationStyle: 'default'
+  navigationStyle: 'custom',
+  navigationLinks: [
+    {
+      title: 'Tips',
+      pageId: 'fec636dfeeef48e09da1732f3b33bbf5'
+    },
+    {
+      title: 'Tools',
+      pageId: 'c3fc1476be894717af9ad19633041032'
+    }
+  ]
 })

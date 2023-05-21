@@ -1,4 +1,4 @@
-name: Push into main branch
+name: Build Image And Deploy
 on:
   schedule:
     - cron: '0 0 * * 0'
