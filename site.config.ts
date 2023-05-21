@@ -2,7 +2,7 @@ import { siteConfig } from './lib/site-config'
 
 export default siteConfig({
   // the site's root Notion page (required)
-  rootNotionPageId: '1492aac4980a44e9b950b6eb5d6e5759',
+  rootNotionPageId: '3b3227b2bd034b4bb92282b6904f4d3c',
 
   // if you want to restrict pages to a single notion workspace (optional)
   // (this should be a Notion ID; see the docs for how to extract this)
@@ -54,12 +54,12 @@ export default siteConfig({
   // navigationStyle: 'custom',
   // navigationLinks: [
   //   {
-  //     title: 'About',
-  //     pageId: 'f1199d37579b41cbabfc0b5174f4256a'
+  //     title: 'Tips',
+  //     pageId: 'fec636dfeeef48e09da1732f3b33bbf5'
   //   },
   //   {
-  //     title: 'Contact',
-  //     pageId: '6a29ebcb935a4f0689fe661ab5f3b8d1'
+  //     title: 'Tools',
+  //     pageId: 'c3fc1476be894717af9ad19633041032'
   //   }
   // ]
 })

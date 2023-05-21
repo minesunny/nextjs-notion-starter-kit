@@ -4,9 +4,10 @@ import { defaultMapImageUrl } from 'react-notion-x'
 import { defaultPageCover, defaultPageIcon } from './config'
 
 export const mapImageUrl = (url: string, block: Block) => {
-  if (url === defaultPageCover || url === defaultPageIcon) {
+  if (url === defaultPageCover || url === defaultPageIcon || url.includes("file.notion.so")) {
     return url
   }
+  let mapImageUrl = defaultMapImageUrl(url, block)
+  return mapImageUrl
 
-  return defaultMapImageUrl(url, block)
 }
