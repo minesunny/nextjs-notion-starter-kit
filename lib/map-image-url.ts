@@ -7,7 +7,6 @@ export const mapImageUrl = (url: string, block: Block) => {
   if (url === defaultPageCover || url === defaultPageIcon || url.includes("file.notion.so")) {
     return url
   }
-  let mapImageUrl = defaultMapImageUrl(url, block)
-  return mapImageUrl
+  return defaultMapImageUrl(url, block)
 
 }
