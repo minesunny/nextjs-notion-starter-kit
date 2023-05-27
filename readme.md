@@ -1,14 +1,8 @@
 # 部署到个人服务器教程
-### 为什么要部署到个人服务器
-cloudflare dns  加vercel部署方案,我尝试过了,说快也不快,说慢也不慢;但是cloudflare dns 好像影响到我域名在国内的解析了;
-
-notion在国内访问还是可以的,天天担心国外的东西有风险,不如多想想写几篇文档;
-
 注意文档里不要引用unplash 图片资源,这个非常慢;可以自己设置图床什么的,或者自己在云服务器上用clash代理
 
 image.yml workflow会将next-notion构建一个镜像,然后到云服务器拉镜像起服务
 所以需要给image.yml配置几个secrets变量(其他notion配置变量请看原仓库文档)
-
 - REGISTRY:docker登录地址 registry.hub.docker.com
 - DOCKER_USERNAME=docker登录账户
 - DOCKER_PASSWORD=docker密码
