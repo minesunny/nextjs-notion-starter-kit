@@ -10,7 +10,7 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'Next.js Notion Starter Kit',
-  domain: 'www.minesunny.cn',
+  domain: 'www.minesunny.com',
   author: 'Mine',
 
   // open graph metadata (optional)
@@ -51,7 +51,7 @@ export default siteConfig({
   // whether to use the default notion navigation style or a custom one with links to
   // important pages
   // navigationStyle: 'default'
-  navigationStyle: 'custom',
+  navigationStyle: 'defult',
   navigationLinks: [
     {
       title: 'Tips',
